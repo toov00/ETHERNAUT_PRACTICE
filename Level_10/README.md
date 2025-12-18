@@ -10,10 +10,10 @@ Side Notes:
 
 1. As I'm using the Remix IDE, and am deploying the attacking contract with some value, I need to include a payable constructor:
 
-```
-contract B {
-    constructor() payable {}
-}
-```
+    ```
+    contract B {
+        constructor() payable {}
+    }
+    ```
 
-It tells the compiler that this contract accepts ETh during deployment.
+    It tells the compiler that this contract accepts ETh during deployment.
