@@ -1,9 +1,5 @@
-# Level 18: Alien Codex
+# Level 17: Magic Number
 
-This level deals with storage slot collisions (again!) combined with an integer underflow vulnerability.
+This level was really difficult for me as I am not familiar with the underlying concepts, i.e., Solidity opcodes and writing contracts directly in bytecode. The challenge requires writing a contract in raw bytecode that returns the number "42", then passing its address to the `setSolver()` function.
 
-The codex array has a `retract()` function that decrements its length without bounds checking. By calling it on an empty array, the length underflows, effectively giving the array access to the entire storage space.
-
-Since dynamic array elements are stored starting at `keccak256(slot)`, and storage slots wrap around, we can calculate an index that points back to slot 0, which is where the owner variable lives. Writing to that index lets us overwrite the owner and claim the contract. But here, it is important to note that the array elements start at `keccak256(1)`, since the codex array's length is stored at slot 1. Slot 0 is occupied by other variables.
-
-And, finding slot 0 isn't thaaaat straightforward. Logically, slot 0 refers to the last slot in codex (since there's a wraparound, and codex begins from slot 0), so this boils down to a modulus math problem! 
+I had to carefully trace through different opcodes to understand what was needed. One important distinction is between initialization and runtime bytecode. The initialization code runs during contract deployment and is responsible for copying the runtime code into memory and returning it to the EVM. The runtime code is what actually executes when the contract is called afterward. Additionally, deploying bytecode via `web3.eth.sendTransaction` with a receiver address of 0x0 triggers contract creation.
