@@ -6,4 +6,4 @@ The codex array has a `retract()` function that decrements its length without bo
 
 Since dynamic array elements are stored starting at `keccak256(slot)`, and storage slots wrap around, we can calculate an index that points back to slot 0, which is where the owner variable lives. Writing to that index lets us overwrite the owner and claim the contract. But here, it is important to note that the array elements start at `keccak256(1)`, since the codex array's length is stored at slot 1. Slot 0 is occupied by other variables.
 
-And, finding slot 0 isn't thaaaat straightforward. Logically, slot 0 refers to the last slot in codex (since there's a wraparound, and codex begins from slot 0), so this boils down to a modulus math problem! 
+And, finding slot 0 isn't thaaaat straightforward. We need to find a codex slot that maps to slot 0, where the `owner` variable is stored! As there is a wrap around, this boils down to a modulus math problem!
